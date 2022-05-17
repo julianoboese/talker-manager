@@ -1,6 +1,13 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs').promises;
+const {
+  tokenValidation,
+  talkerValidation,
+  talkValidation,
+  watchedAtValidation,
+  rateValidation,
+} = require('../middlewares');
 
 const routes = express.Router();
 
@@ -31,5 +38,28 @@ routes.get('/:id', async (req, res) => {
 
   res.status(200).json(selectedTalker);
 });
+
+routes.post('/',
+  tokenValidation, 
+  talkerValidation,
+  talkValidation,
+  watchedAtValidation,
+  rateValidation,
+  async (req, res) => {
+    const { name, age, talk: { watchedAt, rate } } = req.body;
+
+    const talkerData = await readTalkerData();
+
+    const newTalker = {
+      id: talkerData.length + 1,
+      name,
+      age,
+      talk: { watchedAt, rate },
+    };
+
+    await writeTalkerData([...talkerData, newTalker]);
+
+    res.status(201).json(newTalker);
+  });
 
 module.exports = routes;
