@@ -4,9 +4,14 @@ const fs = require('fs').promises;
 
 const routes = express.Router();
 
-routes.get('/', async (_req, res) => {
+async function readTalkerData() {
   const talkerData = await fs.readFile(path.join(__dirname, '..', 'talker.json'), 'utf-8');
-  res.status(200).json(JSON.parse(talkerData));
+  return JSON.parse(talkerData);
+}
+
+routes.get('/', async (_req, res) => {
+  const talkerData = await readTalkerData();
+  res.status(200).json(talkerData);
 });
 
 module.exports = routes;
