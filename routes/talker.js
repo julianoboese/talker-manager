@@ -9,6 +9,11 @@ async function readTalkerData() {
   return JSON.parse(talkerData);
 }
 
+async function writeTalkerData(talkerData) {
+  await fs.writeFile(path.join(__dirname, '..', 'talker.json'),
+      JSON.stringify(talkerData));
+}
+
 routes.get('/', async (_req, res) => {
   const talkerData = await readTalkerData();
   res.status(200).json(talkerData);
