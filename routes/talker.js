@@ -1,6 +1,5 @@
 const express = require('express');
-const path = require('path');
-const fs = require('fs').promises;
+const { readTalkerData, writeTalkerData } = require('../utils');
 const {
   tokenValidation,
   talkerValidation,
@@ -10,16 +9,6 @@ const {
 } = require('../middlewares');
 
 const routes = express.Router();
-
-async function readTalkerData() {
-  const talkerData = await fs.readFile(path.join(__dirname, '..', 'talker.json'), 'utf-8');
-  return JSON.parse(talkerData);
-}
-
-async function writeTalkerData(talkerData) {
-  await fs.writeFile(path.join(__dirname, '..', 'talker.json'),
-      JSON.stringify(talkerData));
-}
 
 routes.get('/', async (_req, res) => {
   const talkerData = await readTalkerData();
