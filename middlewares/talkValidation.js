@@ -14,6 +14,7 @@ function talkValidation(req, res, next) {
 function watchedAtValidation(req, res, next) {
   const { talk: { watchedAt } } = req.body;
 
+  // https://stackoverflow.com/questions/5465375/javascript-date-regex-dd-mm-yyyy
   const dateRegex = /^(0?[1-9]|[12][0-9]|3[01])[/](0?[1-9]|1[012])[/]\d{4}$/;
   if (!dateRegex.test(watchedAt)) {
     return res.status(400).json(
