@@ -51,6 +51,26 @@ routes.post('/', validation, async (req, res) => {
     await writeTalkerData([...talkerData, newTalker]);
 
     res.status(201).json(newTalker);
-  });
+});
+
+routes.put('/:id', validation, async (req, res) => {
+  const { id } = req.params;
+  const { name, age, talk: { watchedAt, rate } } = req.body;
+
+  const talkerData = await readTalkerData();
+
+  const talkerIndex = talkerData.findIndex((talker) => talker.id === parseInt(id, 10));
+  
+  talkerData[talkerIndex] = {
+    ...talkerData[talkerIndex],
+    name,
+    age,
+    talk: { ...talkerData[talkerIndex].talk, watchedAt, rate },
+  };
+
+  await writeTalkerData(talkerData);
+
+  res.status(200).json(talkerData[talkerIndex]);
+});
 
 module.exports = routes;
