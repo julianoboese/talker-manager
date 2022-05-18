@@ -15,6 +15,20 @@ routes.get('/', async (_req, res) => {
   res.status(200).json(talkerData);
 });
 
+routes.get('/search', tokenValidation, async (req, res) => {
+  const { q } = req.query;
+  
+  const talkerData = await readTalkerData();
+
+  if (!q) {
+    return res.status(200).json(talkerData);
+  }
+
+  const selectedTalkers = talkerData.filter((talker) => talker.name.includes(q));
+
+  res.status(200).json(selectedTalkers);
+});
+
 routes.get('/:id', async (req, res) => {
   const { id } = req.params;
 
