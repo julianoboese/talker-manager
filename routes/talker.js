@@ -28,13 +28,15 @@ routes.get('/:id', async (req, res) => {
   res.status(200).json(selectedTalker);
 });
 
-routes.post('/',
+const validation = [
   tokenValidation, 
   talkerValidation,
   talkValidation,
   watchedAtValidation,
   rateValidation,
-  async (req, res) => {
+];
+
+routes.post('/', validation, async (req, res) => {
     const { name, age, talk: { watchedAt, rate } } = req.body;
 
     const talkerData = await readTalkerData();
