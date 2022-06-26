@@ -1,0 +1,137 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Talker Manager API",
+    "description": "API created for Trybe course that manages talkers and their talks.",
+    "version": "1.0.0"
+  },
+  "servers":[
+    {
+      "url": "https://talker-manager-julianoboese.herokuapp.com"
+    }
+  ],
+  "components": {
+    "schemas": {
+      "loginBody": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "talkerData": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "age": {
+            "type": "number"
+          },
+          "id": {
+            "type": "number"
+          },
+          "talk": {
+            "type": "object",
+            "properties": {
+              "watchedAt": {
+                "type": "string"
+              },
+              "rate": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "login",
+      "description": "Operations related to login"
+    },
+    {
+      "name": "talker",
+      "description": "Operations related to talkers"
+    }
+  ],
+  "paths": {
+    "/login": {
+      "post": {
+        "summary": "User login",
+        "description": "Verify login with user email and password",
+        "tags": ["login"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/loginBody"
+              }
+            }
+          },
+          "examples": {
+            "login": {
+              "summary": "User Data Example",
+              "value": {
+                "email": "example@example.com",
+                "password": "123456"
+              }
+            }
+          }
+          },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/talker/{id}": {
+      "get": {
+        "summary": "Find talker by ID",
+        "description": "Returns talker based on ID",
+        "tags": ["talker"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "talker ID",
+            "required": true
+          }
+        ], 
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/talkerData"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Talker not found"
+          }
+        }
+      }
+    }
+  }
+}
