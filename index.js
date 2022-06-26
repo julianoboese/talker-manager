@@ -1,10 +1,12 @@
 const express = require('express');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const swaggerUi = require('swagger-ui-express');
 const swaggerConfig = require('./swagger.json');
 const { talkerRoutes, loginRoutes } = require('./routes');
 
 const app = express();
+app.use(cors());
 app.use(bodyParser.json());
 
 const HTTP_OK_STATUS = 200;
