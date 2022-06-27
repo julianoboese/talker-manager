@@ -8,7 +8,8 @@
   },
   "scripts": {
     "start": "node index.js",
-    "test": "jest --runInBand --verbose --forceExit"
+    "test": "jest --runInBand --verbose --forceExit",
+    "restore": "cp tests/seed.json talker.json"
   },
   "repository": {
     "type": "git",
