@@ -23,6 +23,34 @@
           }
         }
       },
+      "allTalkersData": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "age": {
+              "type": "number"
+            },
+            "id": {
+              "type": "number"
+            },
+            "talk": {
+              "type": "object",
+              "properties": {
+                "watchedAt": {
+                  "type": "string"
+                },
+                "rate": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      },
       "talkerData": {
         "type": "object",
         "properties": {
@@ -33,6 +61,28 @@
             "type": "number"
           },
           "id": {
+            "type": "number"
+          },
+          "talk": {
+            "type": "object",
+            "properties": {
+              "watchedAt": {
+                "type": "string"
+              },
+              "rate": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      },
+      "newTalkerData": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "age": {
             "type": "number"
           },
           "talk": {
@@ -99,6 +149,60 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/talker": {
+      "get": {
+        "summary": "Find all talkers",
+        "description": "Returns all talkers",
+        "tags": ["talker"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/allTalkersData"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Add new talker",
+        "description": "Create a new talker with the input data",
+        "tags": ["talker"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/newTalkerData"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/talkerData"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         }
       }
@@ -128,7 +232,100 @@
             }
           },
           "404": {
-            "description": "Talker not found"
+            "description": "Not Found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update talker",
+        "description": "Update talker with the selected ID",
+        "tags": ["talker"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "talker ID",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/newTalkerData"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/talkerData"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete talker",
+        "description": "Delete talker with the selected ID",
+        "tags": ["talker"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "talker ID",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/talker/search": {
+      "get": {
+        "summary": "Find talker by search term",
+        "description": "Returns talkers whose name matches the search term",
+        "tags": ["talker"],
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "description": "search term for talker name"
+          }
+        ], 
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/allTalkersData"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         }
       }
